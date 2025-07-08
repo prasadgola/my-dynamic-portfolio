@@ -1,11 +1,10 @@
 // app/components/PortfolioCritique.tsx
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import portfolioData from '../data/portfolioData'; // Ensure portfolioData is imported here to use its type
+import React, { useState, useEffect, useCallback } from 'react'; // <--- NEW: Import useCallback
+import portfolioData from '../data/portfolioData';
 
 interface PortfolioCritiqueProps {
-  // <--- FIXED: Use typeof portfolioData.default for stricter typing
   portfolioData: typeof portfolioData;
 }
 
@@ -14,13 +13,13 @@ const PortfolioCritique: React.FC<PortfolioCritiqueProps> = ({ portfolioData }) 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const generateCritique = async () => { // This function needs to be stable or included in deps
+  // <--- FIXED: Wrap generateCritique in useCallback
+  const generateCritique = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     setCritique(''); // Clear previous critique
 
     try {
-      // Construct a detailed prompt for the LLM
       const critiquePrompt = `
         You are an experienced career coach and a portfolio expert.
         Your task is to provide constructive critique and actionable suggestions for a professional portfolio based on the provided JSON data.
@@ -55,15 +54,14 @@ const PortfolioCritique: React.FC<PortfolioCritiqueProps> = ({ portfolioData }) 
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [portfolioData]); // <--- Dependency array for useCallback: depends on portfolioData
 
   // Generate critique on component mount
   useEffect(() => {
-    // Only generate critique if portfolioData is available and not already loaded/loading
     if (portfolioData && !critique && !isLoading && !error) {
       generateCritique();
     }
-  }, [portfolioData, critique, isLoading, error, generateCritique]); // <--- FIXED: Added generateCritique to dependencies
+  }, [portfolioData, critique, isLoading, error, generateCritique]); // generateCritique is now stable
 
   return (
     <div className="bg-white/10 backdrop-blur-sm rounded-lg shadow-xl p-6">
