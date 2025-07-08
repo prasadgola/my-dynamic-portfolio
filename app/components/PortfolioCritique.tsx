@@ -2,9 +2,11 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import portfolioData from '../data/portfolioData'; // Ensure portfolioData is imported here to use its type
 
 interface PortfolioCritiqueProps {
-  portfolioData: any; // We'll pass your entire portfolio data here
+  // <--- FIXED: Use typeof portfolioData.default for stricter typing
+  portfolioData: typeof portfolioData;
 }
 
 const PortfolioCritique: React.FC<PortfolioCritiqueProps> = ({ portfolioData }) => {
@@ -12,7 +14,7 @@ const PortfolioCritique: React.FC<PortfolioCritiqueProps> = ({ portfolioData }) 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const generateCritique = async () => {
+  const generateCritique = async () => { // This function needs to be stable or included in deps
     setIsLoading(true);
     setError(null);
     setCritique(''); // Clear previous critique
@@ -57,11 +59,11 @@ const PortfolioCritique: React.FC<PortfolioCritiqueProps> = ({ portfolioData }) 
 
   // Generate critique on component mount
   useEffect(() => {
-    // Only generate critique if portfolioData is available
+    // Only generate critique if portfolioData is available and not already loaded/loading
     if (portfolioData && !critique && !isLoading && !error) {
       generateCritique();
     }
-  }, [portfolioData, critique, isLoading, error]); // Dependencies for useEffect
+  }, [portfolioData, critique, isLoading, error, generateCritique]); // <--- FIXED: Added generateCritique to dependencies
 
   return (
     <div className="bg-white/10 backdrop-blur-sm rounded-lg shadow-xl p-6">
@@ -70,7 +72,6 @@ const PortfolioCritique: React.FC<PortfolioCritiqueProps> = ({ portfolioData }) 
         {isLoading && <p className="text-center text-blue-300">Generating personalized suggestions...</p>}
         {error && <p className="text-center text-red-400">{error}</p>}
         {critique && !isLoading && (
-          // Using dangerouslySetInnerHTML to render potential bullet points/line breaks from LLM
           <div dangerouslySetInnerHTML={{ __html: critique.replace(/\n/g, '<br>') }} />
         )}
       </div>

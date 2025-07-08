@@ -2,6 +2,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect, FormEvent } from 'react';
+import portfolioData from '../data/portfolioData'; // Ensure portfolioData is imported here to use its type
 
 interface ChatMessage {
   type: 'user' | 'bot';
@@ -9,7 +10,8 @@ interface ChatMessage {
 }
 
 interface InteractiveResumeChatbotProps {
-  portfolioData: any; // We'll refine this type later if needed
+  // <--- FIXED: Use typeof portfolioData.default for stricter typing
+  portfolioData: typeof portfolioData;
 }
 
 const InteractiveResumeChatbot: React.FC<InteractiveResumeChatbotProps> = ({ portfolioData }) => {
@@ -45,7 +47,6 @@ const InteractiveResumeChatbot: React.FC<InteractiveResumeChatbotProps> = ({ por
 
     try {
       // Craft a comprehensive prompt that includes the user's query and relevant portfolio data
-      // This is a crucial step for the LLM to provide informed answers.
       const fullPrompt = `
         You are an AI assistant representing Basavaprasad Mallikarjun Gola's professional portfolio.
         Your goal is to answer questions about their skills, experience, projects, and general professional background based *only* on the provided JSON data.
