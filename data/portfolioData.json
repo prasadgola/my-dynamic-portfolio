@@ -1,0 +1,121 @@
+{
+  "personalInfo": {
+    "name": "Basavaprasad Mallikarjun Gola",
+    "title": "Full Stack Developer | AI Enthusiast",
+    "bioSummary": "A passionate and innovative developer with expertise in web technologies, cloud computing, and a keen interest in leveraging AI/ML for dynamic applications. I thrive on building scalable, user-centric solutions.",
+    "contact": {
+      "email": "Myemail@example.com",
+      "linkedin": "https://www.linkedin.com/in/basavaprasad-gola/",
+      "github": "https://github.com/prasadgolac",
+      "website": "https://prasadgola.github.io/"
+    }
+  },
+  "skills": [
+    {
+      "category": "Programming Languages",
+      "items": ["JavaScript/TypeScript", "Python", "Go", "Java"]
+    },
+    {
+      "category": "Frontend",
+      "items": ["React", "Next.js", "Vue.js", "Tailwind CSS", "HTML5", "CSS3"]
+    },
+    {
+      "category": "Backend",
+      "items": ["Node.js", "Express.js", "FastAPI", "Django", "REST APIs", "GraphQL"]
+    },
+    {
+      "category": "Databases",
+      "items": ["PostgreSQL", "MongoDB", "MySQL", "Redis"]
+    },
+    {
+      "category": "Cloud & DevOps",
+      "items": ["AWS", "Docker", "Kubernetes", "CI/CD"]
+    },
+    {
+      "category": "AI/ML & LLMs",
+      "items": ["Generative AI", "LLM APIs (OpenAI, Gemini)", "Vector Databases", "Prompt Engineering", "NLP"]
+    }
+  ],
+  "experience": [
+    {
+      "title": "Senior Software Engineer",
+      "company": "Tech Solutions Inc.",
+      "duration": "Jan 2022 - Present",
+      "responsibilities": [
+        "Led development of scalable microservices using Node.js and PostgreSQL.",
+        "Implemented CI/CD pipelines, reducing deployment time by 30%.",
+        "Mentored junior developers and conducted code reviews."
+      ],
+      "achievements": [
+        "Increased system performance by 25% through database optimization.",
+        "Successfully launched a new product feature, contributing to 15% revenue growth."
+      ]
+    },
+    {
+      "title": "Software Developer",
+      "company": "Innovate Corp.",
+      "duration": "Jul 2019 - Dec 2021",
+      "responsibilities": [
+        "Developed and maintained frontend applications using React and TypeScript.",
+        "Collaborated with product teams to gather requirements and define features."
+      ],
+      "achievements": [
+        "Contributed to a major UI/UX redesign, improving user engagement by 20%.",
+        "Integrated third-party APIs for enhanced functionality."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "id": "proj_llm_portfolio",
+      "name": "Dynamic AI Portfolio Website",
+      "technologies": ["Next.js", "React", "Tailwind CSS", "Google Gemini API", "Node.js (API Routes)"],
+      "shortDescription": "A cutting-edge portfolio showcasing dynamic UI, content, and interactions powered by LLM APIs.",
+      "longDescription": "This project is a testament to the power of generative AI in web development. It features a dynamically changing UI (backgrounds, layouts, spacing) on refresh, AI-generated project descriptions on click, an interactive resume chatbot, and a self-critique mechanism. The core idea is to fetch and pre-load LLM-generated content to provide a seamless and engaging user experience. It demonstrates advanced integration of LLM APIs with a modern frontend framework.",
+      "githubLink": "https://github.com/yourgithub/my-dynamic-portfolio",
+      "liveLink": "https://your-dynamic-portfolio.vercel.app"
+    },
+    {
+      "id": "proj_ecomm_platform",
+      "name": "E-commerce Platform with Microservices",
+      "technologies": ["Java Spring Boot", "PostgreSQL", "Docker", "React", "Kafka"],
+      "shortDescription": "Scalable e-commerce platform built with microservices architecture and modern frontend.",
+      "longDescription": "Designed and developed a robust e-commerce platform using a microservices architecture. Implemented various services including product catalog, order management, and user authentication. Utilized Java Spring Boot for backend services, PostgreSQL for data storage, and Docker for containerization. The frontend was built with React, ensuring a responsive and intuitive user interface. Integrated Kafka for asynchronous communication between services.",
+      "githubLink": "https://github.com/yourgithub/ecomm-platform",
+      "liveLink": null
+    },
+    {
+      "id": "proj_ml_dashboard",
+      "name": "Machine Learning Model Deployment Dashboard",
+      "technologies": ["Python (FastAPI)", "TensorFlow", "React", "Kubernetes", "AWS S3"],
+      "shortDescription": "Dashboard for deploying, monitoring, and managing ML models in production.",
+      "longDescription": "Developed a dashboard that streamlines the deployment and monitoring of machine learning models. The backend, built with Python (FastAPI), serves predictions from TensorFlow models. Kubernetes was used for orchestration, enabling scalable and resilient deployments. Model artifacts and datasets are stored in AWS S3. The React frontend provides real-time monitoring of model performance and allows for easy A/B testing of different model versions.",
+      "githubLink": "https://github.com/yourgithub/ml-dashboard",
+      "liveLink": null
+    }
+  ],
+  "education": [
+    {
+      "degree": "Master of Science in Computer Science",
+      "university": "University of Tech",
+      "duration": "2018 - 2020",
+      "details": "Specialized in Artificial Intelligence and Software Engineering. GPA: 3.9/4.0"
+    },
+    {
+      "degree": "Bachelor of Science in Computer Engineering",
+      "university": "State University",
+      "duration": "2014 - 2018",
+      "details": "Focused on Data Structures, Algorithms, and Web Development."
+    }
+  ],
+  "testimonials": [
+    {
+      "author": "Jane Doe, CEO of Tech Solutions Inc.",
+      "quote": "Your Name is an exceptional engineer. Their ability to tackle complex problems and deliver high-quality solutions significantly impacted our team's success."
+    },
+    {
+      "author": "John Smith, Project Manager at Innovate Corp.",
+      "quote": "A true team player, Your Name consistently impressed us with their dedication and innovative approach to frontend development. Highly recommended!"
+    }
+  ]
+}
