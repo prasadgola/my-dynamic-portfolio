@@ -1,11 +1,12 @@
 // app/components/PortfolioCritique.tsx
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react'; // <--- NEW: Import useCallback
-import portfolioData from '../data/portfolioData';
+import React, { useState, useEffect, useCallback } from 'react';
+import portfolioData from '../data/portfolioData.json'; // <--- FIXED: Explicitly use .json extension
+import { PortfolioData } from '../data/portfolioData.d'; // <--- NEW: Import the PortfolioData interface
 
 interface PortfolioCritiqueProps {
-  portfolioData: typeof portfolioData;
+  portfolioData: PortfolioData; // <--- FIXED: Use the PortfolioData interface
 }
 
 const PortfolioCritique: React.FC<PortfolioCritiqueProps> = ({ portfolioData }) => {
@@ -13,7 +14,6 @@ const PortfolioCritique: React.FC<PortfolioCritiqueProps> = ({ portfolioData }) 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  // <--- FIXED: Wrap generateCritique in useCallback
   const generateCritique = useCallback(async () => {
     setIsLoading(true);
     setError(null);
@@ -54,14 +54,13 @@ const PortfolioCritique: React.FC<PortfolioCritiqueProps> = ({ portfolioData }) 
     } finally {
       setIsLoading(false);
     }
-  }, [portfolioData]); // <--- Dependency array for useCallback: depends on portfolioData
+  }, [portfolioData]);
 
-  // Generate critique on component mount
   useEffect(() => {
     if (portfolioData && !critique && !isLoading && !error) {
       generateCritique();
     }
-  }, [portfolioData, critique, isLoading, error, generateCritique]); // generateCritique is now stable
+  }, [portfolioData, critique, isLoading, error, generateCritique]);
 
   return (
     <div className="bg-white/10 backdrop-blur-sm rounded-lg shadow-xl p-6">

@@ -2,7 +2,8 @@
 'use client';
 
 import React, { useState, useRef, useEffect, FormEvent } from 'react';
-import portfolioData from '../data/portfolioData'; // Ensure portfolioData is imported here to use its type
+import portfolioData from '../data/portfolioData.json'; // <--- FIXED: Explicitly use .json extension
+import { PortfolioData } from '../data/portfolioData.d'; // <--- NEW: Import the PortfolioData interface
 
 interface ChatMessage {
   type: 'user' | 'bot';
@@ -10,8 +11,7 @@ interface ChatMessage {
 }
 
 interface InteractiveResumeChatbotProps {
-  // <--- FIXED: Use typeof portfolioData.default for stricter typing
-  portfolioData: typeof portfolioData;
+  portfolioData: PortfolioData; // <--- FIXED: Use the PortfolioData interface
 }
 
 const InteractiveResumeChatbot: React.FC<InteractiveResumeChatbotProps> = ({ portfolioData }) => {
