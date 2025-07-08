@@ -1,6 +1,6 @@
 // app/api/gemini/route.ts
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { NextResponse, NextRequest } from 'next/server'; // Keep NextRequest import
+import { NextResponse, NextRequest } from 'next/server';
 
 // Retrieve API key from environment variables
 const geminiApiKey = process.env.GEMINI_API_KEY;
@@ -15,13 +15,11 @@ if (!geminiApiKey) {
 // Using an empty string fallback to allow compilation, but the check above handles the actual error case.
 const genAI = new GoogleGenerativeAI(geminiApiKey || '');
 
-export async function POST(req: NextRequest) { // Use NextRequest for correct typing
+export async function POST(req: NextRequest) { // Using NextRequest for correct typing
   try {
-    // Attempt to extract prompt and an optional modelName from the request body.
-    // Default to 'gemini-2.0-flash' if clientModelName is not provided.
     const { prompt, modelName: clientModelName } = await req.json();
 
-    const finalModelName = clientModelName || 'gemini-2.0-flash'; // <-- CRITICAL FIX: Use the model that worked locally
+    const finalModelName = clientModelName || 'gemini-2.0-flash'; // Ensure using the working model
 
     // Validate if a prompt was actually sent
     if (!prompt) {
@@ -43,20 +41,28 @@ export async function POST(req: NextRequest) { // Use NextRequest for correct ty
     console.log('SERVER INFO: Successfully generated content from Gemini API.');
     return NextResponse.json({ generatedText: text });
 
-  } catch (error: any) { // Explicitly type error for better handling and logging
+  } catch (error: unknown) { // <--- FIXED: Type 'error' as unknown instead of 'any'
     console.error('SERVER ERROR: An error occurred while calling the Gemini API:');
 
-    // Detailed error logging
-    if (error.status) {
-        console.error(`  HTTP Status: ${error.status}`);
+    // Safely check error properties using type narrowing
+    if (error instanceof Error) {
+        console.error(`  Error Message: ${error.message}`);
+        // Attempt to extract more details if it's a GoogleGenerativeAI error
+        if ('response' in error && typeof (error as any).response === 'object') {
+            const geminiErrorResponse = (error as any).response;
+            if (geminiErrorResponse.status) {
+                console.error(`  Gemini API Status: ${geminiErrorResponse.status}`);
+            }
+            if (geminiErrorResponse.statusText) {
+                console.error(`  Gemini API Status Text: ${geminiErrorResponse.statusText}`);
+            }
+        }
+    } else {
+        // Fallback for errors that are not standard Error objects
+        console.error('  Full error object:', JSON.stringify(error, null, 2));
     }
-    if (error.message) {
-        console.error(`  Message: ${error.message}`);
-    }
-    // Log the full error object for detailed inspection
-    console.error('  Full error object:', error);
 
-    // Provide a generic, informative error to the client, keeping internal details private
+    // Provide a generic, informative error to the client
     return NextResponse.json(
       { error: 'Failed to generate content from LLM. Check server logs for more details.' },
       { status: 500 }
