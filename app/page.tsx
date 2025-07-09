@@ -2,7 +2,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react'; // <-- IMPORT useCallback
 import PortfolioCritique from './components/PortfolioCritique';
 import InteractiveResumeChatbot from './components/InteractiveResumeChatbot';
 import portfolioData from './data/portfolioData.json';
@@ -48,7 +48,8 @@ export default function Home() {
     "Suggest a gentle, flowing CSS linear-gradient suitable for a creative tech portfolio. Use complementary muted tones. Provide only the CSS value."
   ];
 
-  const fetchDynamicAboutMe = async () => {
+  // Wrap fetchDynamicAboutMe in useCallback
+  const fetchDynamicAboutMe = useCallback(async () => { // <-- WRAP IN useCallback
     setDynamicAboutMe({ text: '', isLoading: true, error: null });
     const selectedPrompt = aboutMePromptVariations[Math.floor(Math.random() * aboutMePromptVariations.length)];
 
@@ -76,13 +77,14 @@ export default function Home() {
 
       const data = await res.json();
       setDynamicAboutMe({ text: data.generatedText, isLoading: false, error: null });
-    } catch (err: any) {
+    } catch (err: any) { // <-- FIX: Explicitly type 'error' as 'any'
       console.error('Error fetching dynamic about me:', err);
       setDynamicAboutMe({ text: '', isLoading: false, error: 'Failed to load dynamic summary. Please try again.' });
     }
-  };
+  }, [portfolioData]); // <-- DEPENDENCY: portfolioData
 
-  const fetchDynamicBackground = async () => {
+  // Wrap fetchDynamicBackground in useCallback
+  const fetchDynamicBackground = useCallback(async () => { // <-- WRAP IN useCallback
     setDynamicBackground({ style: 'linear-gradient(to right, #1a202c, #2d3748)', isLoading: true, error: null });
     const selectedPrompt = backgroundPromptVariations[Math.floor(Math.random() * backgroundPromptVariations.length)];
 
@@ -121,16 +123,17 @@ export default function Home() {
         setDynamicBackground({ style: 'linear-gradient(to right, #1a202c, #2d3748)', isLoading: false, error: 'Invalid gradient generated. Using default.' });
       }
 
-    } catch (err: any) {
+    } catch (err: any) { // <-- FIX: Explicitly type 'error' as 'any'
       console.error('Error fetching dynamic background:', err);
       setDynamicBackground({ style: 'linear-gradient(to right, #1a202c, #2d3748)', isLoading: false, error: 'Failed to load dynamic background. Using default.' });
     }
-  };
+  }, []); // <-- DEPENDENCY: Empty array, as it doesn't depend on component props/state
+
 
   useEffect(() => {
     fetchDynamicAboutMe();
     fetchDynamicBackground();
-  }, []);
+  }, [fetchDynamicAboutMe, fetchDynamicBackground]); // <-- FIX: Include both functions as dependencies
 
   const layoutThemes = [
     { id: 'full', name: 'Full Portfolio' },
@@ -195,7 +198,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Profile Image Section - UPDATED TO USE MODERN NEXT.JS IMAGE PROPS */}
         <section className="flex justify-center items-center">
           <div className="relative w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden border-4 border-purple-500 shadow-lg">
             <Image
@@ -282,7 +284,8 @@ export default function Home() {
           <div className="space-y-6">
             {portfolioData.testimonials.map((test: TestimonialItem, index: number) => (
               <div key={index} className="bg-white/5 p-4 rounded-lg italic text-center">
-                <p className="text-lg text-gray-300 mb-2">"{test.quote}"</p>
+                {/* FIX: Escaped quotes */}
+                <p className="text-lg text-gray-300 mb-2">&quot;{test.quote}&quot;</p>
                 <p className="text-sm text-gray-400">- {test.author}</p>
               </div>
             ))}

@@ -17,8 +17,7 @@ export async function POST(req: Request) {
     }
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    // Updated model to 'gemini-1.5-flash'
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' }); // Keep this model
 
     const result = await model.generateContent(prompt);
     const response = result.response;
@@ -26,12 +25,12 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ generatedText });
 
-  } catch (error: any) {
+  } catch (error: any) { // <-- FIX: Explicitly type 'error' as 'any'
     console.error('Gemini API call failed:', error);
     if (error.response && error.response.status) {
       console.error('Error status:', error.response.status);
       console.error('Error data:', await error.response.text());
     }
-    return NextResponse.json({ error: 'Failed to generate content from LLM.', details: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to generate content from LLM.', details: (error as Error).message }, { status: 500 });
   }
 }
