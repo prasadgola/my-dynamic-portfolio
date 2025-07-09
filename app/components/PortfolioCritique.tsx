@@ -1,12 +1,12 @@
 // app/components/PortfolioCritique.tsx
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
-import portfolioData from '../data/portfolioData.json'; // <--- FIXED: Explicitly use .json extension
-import { PortfolioData } from '../data/portfolioData.d'; // <--- NEW: Import the PortfolioData interface
+import React, { useState, useEffect } from 'react';
+import portfolioData from '../data/portfolioData'; // Ensure portfolioData is imported here to use its type
 
 interface PortfolioCritiqueProps {
-  portfolioData: PortfolioData; // <--- FIXED: Use the PortfolioData interface
+  // <--- FIXED: Use typeof portfolioData.default for stricter typing
+  portfolioData: typeof portfolioData;
 }
 
 const PortfolioCritique: React.FC<PortfolioCritiqueProps> = ({ portfolioData }) => {
@@ -14,12 +14,13 @@ const PortfolioCritique: React.FC<PortfolioCritiqueProps> = ({ portfolioData }) 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const generateCritique = useCallback(async () => {
+  const generateCritique = async () => { // This function needs to be stable or included in deps
     setIsLoading(true);
     setError(null);
     setCritique(''); // Clear previous critique
 
     try {
+      // Construct a detailed prompt for the LLM
       const critiquePrompt = `
         You are an experienced career coach and a portfolio expert.
         Your task is to provide constructive critique and actionable suggestions for a professional portfolio based on the provided JSON data.
@@ -54,13 +55,15 @@ const PortfolioCritique: React.FC<PortfolioCritiqueProps> = ({ portfolioData }) 
     } finally {
       setIsLoading(false);
     }
-  }, [portfolioData]);
+  };
 
+  // Generate critique on component mount
   useEffect(() => {
+    // Only generate critique if portfolioData is available and not already loaded/loading
     if (portfolioData && !critique && !isLoading && !error) {
       generateCritique();
     }
-  }, [portfolioData, critique, isLoading, error, generateCritique]);
+  }, [portfolioData, critique, isLoading, error, generateCritique]); // <--- FIXED: Added generateCritique to dependencies
 
   return (
     <div className="bg-white/10 backdrop-blur-sm rounded-lg shadow-xl p-6">
