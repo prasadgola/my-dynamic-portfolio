@@ -201,8 +201,8 @@ export default function Home() {
         <section className="flex justify-center items-center">
           <div className="relative w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden border-4 border-purple-500 shadow-lg">
             <Image
-              src="/images/your-profile-pic.jpg"
-              alt="Your Profile Picture"
+              src="/images/Ba.png"
+              alt="Basavaprasad Mallikarjun Gola Profile Picture"
               fill={true}
               style={{ objectFit: 'cover' }}
               className="rounded-full"
