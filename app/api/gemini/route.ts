@@ -3,26 +3,34 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
+  console.log('Gemini API route called');
+  
   try {
     const { prompt } = await req.json();
+    console.log('Received prompt:', prompt ? 'Present' : 'Missing');
 
     if (!prompt) {
       return NextResponse.json({ error: 'Prompt is required' }, { status: 400 });
     }
 
     const apiKey = process.env.GEMINI_API_KEY;
+    console.log('API Key:', apiKey ? 'Present' : 'Missing');
+    
     if (!apiKey) {
       console.error('GEMINI_API_KEY is not set in environment variables.');
       return NextResponse.json({ error: 'Server configuration error: API key missing' }, { status: 500 });
     }
 
+    console.log('Initializing Gemini AI...');
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' }); // Use more stable model
 
+    console.log('Calling Gemini API...');
     const result = await model.generateContent(prompt);
     const response = result.response;
     const generatedText = response.text();
 
+    console.log('Gemini API response received successfully');
     return NextResponse.json({ generatedText });
 
   } catch (error: unknown) { // Keep 'unknown' as it's the standard way to catch errors now
