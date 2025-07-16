@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     }
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' }); // Keep this model
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
     const result = await model.generateContent(prompt);
     const response = result.response;
@@ -25,12 +25,23 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ generatedText });
 
-  } catch (error: unknown) {
+  } catch (error: unknown) { // Keep 'unknown' as it's the standard way to catch errors now
     console.error('Gemini API call failed:', error);
-    if (error.response && error.response.status) {
-      console.error('Error status:', error.response.status);
-      console.error('Error data:', await error.response.text());
+
+    // FIX START: Safely check for 'response' and 'status'
+    if (typeof error === 'object' && error !== null && 'response' in error) {
+      const apiError = error as { response: { status: number, text: () => Promise<string> } }; // Type assertion
+      if (apiError.response && typeof apiError.response === 'object' && 'status' in apiError.response) {
+        console.error('Error status:', apiError.response.status);
+        console.error('Error data:', await apiError.response.text());
+      }
     }
-    return NextResponse.json({ error: 'Failed to generate content from LLM.', details: (error as Error).message }, { status: 500 });
+    // FIX END
+
+    // Ensure `error` is treated as an Error object for its message
+    return NextResponse.json(
+      { error: 'Failed to generate content from LLM.', details: (error instanceof Error ? error.message : String(error)) },
+      { status: 500 }
+    );
   }
 }
