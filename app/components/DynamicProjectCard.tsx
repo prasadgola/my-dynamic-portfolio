@@ -60,7 +60,7 @@ const DynamicProjectCard: React.FC<DynamicProjectCardProps> = ({ project }) => {
       const data = await res.json();
       // console.log(`[${project.name}] - Generated Short Description:`, data.generatedText);
       setDynamicShortDescription(data.generatedText);
-    } catch (err: any) { // <-- FIX: Explicitly type 'error' as 'any'
+    } catch (err: unknown) {
       console.error(`Error fetching dynamic short description for ${project.name}:`, err);
       setError('Failed to load project description.');
     } finally {

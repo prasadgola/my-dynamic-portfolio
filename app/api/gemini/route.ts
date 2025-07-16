@@ -25,7 +25,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ generatedText });
 
-  } catch (error: any) { // <-- FIX: Explicitly type 'error' as 'any'
+  } catch (error: unknown) {
     console.error('Gemini API call failed:', error);
     if (error.response && error.response.status) {
       console.error('Error status:', error.response.status);

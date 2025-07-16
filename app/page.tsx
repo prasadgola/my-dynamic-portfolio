@@ -77,11 +77,11 @@ export default function Home() {
 
       const data = await res.json();
       setDynamicAboutMe({ text: data.generatedText, isLoading: false, error: null });
-    } catch (err: any) { // <-- FIX: Explicitly type 'error' as 'any'
+    } catch (err: unknown) {
       console.error('Error fetching dynamic about me:', err);
       setDynamicAboutMe({ text: '', isLoading: false, error: 'Failed to load dynamic summary. Please try again.' });
     }
-  }, [portfolioData]); // <-- DEPENDENCY: portfolioData
+  }, [aboutMePromptVariations]);
 
   // Wrap fetchDynamicBackground in useCallback
   const fetchDynamicBackground = useCallback(async () => { // <-- WRAP IN useCallback
@@ -123,11 +123,11 @@ export default function Home() {
         setDynamicBackground({ style: 'linear-gradient(to right, #1a202c, #2d3748)', isLoading: false, error: 'Invalid gradient generated. Using default.' });
       }
 
-    } catch (err: any) { // <-- FIX: Explicitly type 'error' as 'any'
+    } catch (err: unknown) {
       console.error('Error fetching dynamic background:', err);
       setDynamicBackground({ style: 'linear-gradient(to right, #1a202c, #2d3748)', isLoading: false, error: 'Failed to load dynamic background. Using default.' });
     }
-  }, []); // <-- DEPENDENCY: Empty array, as it doesn't depend on component props/state
+  }, [backgroundPromptVariations]);
 
 
   useEffect(() => {
