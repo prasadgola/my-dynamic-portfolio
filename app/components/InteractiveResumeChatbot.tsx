@@ -10,7 +10,7 @@ interface InteractiveResumeChatbotProps {
   portfolioData: PortfolioData; // This prop is passed but the component body is minimal
 }
 
-const InteractiveResumeChatbot: React.FC<InteractiveResumeChatbotProps> = ({ portfolioData }) => {
+const InteractiveResumeChatbot: React.FC<InteractiveResumeChatbotProps> = () => {
   // All Chatbot logic and state (useState, useRef, useEffect, FormEvent, ChatMessage, messages, etc.)
   // were likely removed or commented out, leading to 'defined but never used' errors.
   // For now, this component will just display a "Coming Soon" message.

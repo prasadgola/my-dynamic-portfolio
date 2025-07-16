@@ -36,21 +36,16 @@ export default function Home() {
     error: null,
   });
 
-  const aboutMePromptVariations = [
-    "Generate a concise, professional summary for a software engineer based on the following portfolio data. Highlight key strengths and career focus.",
-    "Draft an engaging 'About Me' section from the perspective of a proactive software engineer using this portfolio data. Focus on impact and passion for technology.",
-    "Create a brief, compelling introduction for a developer based on their skills and experience below, suitable for an 'About Me' section, emphasizing their unique value proposition."
-  ];
-
-  const backgroundPromptVariations = [
-    "Generate a CSS linear-gradient background that evokes a sense of modern technology and innovation. Use dark, subtle, or futuristic colors. Provide only the CSS value (e.g., 'linear-gradient(to right, #1a202c, #2d3748)').",
-    "Create a visually appealing and abstract CSS linear-gradient. Focus on professional yet dynamic colors. Provide only the CSS value.",
-    "Suggest a gentle, flowing CSS linear-gradient suitable for a creative tech portfolio. Use complementary muted tones. Provide only the CSS value."
-  ];
-
   // Wrap fetchDynamicAboutMe in useCallback
   const fetchDynamicAboutMe = useCallback(async () => { // <-- WRAP IN useCallback
     setDynamicAboutMe({ text: '', isLoading: true, error: null });
+    
+    const aboutMePromptVariations = [
+      "Generate a concise, professional summary for a software engineer based on the following portfolio data. Highlight key strengths and career focus.",
+      "Draft an engaging 'About Me' section from the perspective of a proactive software engineer using this portfolio data. Focus on impact and passion for technology.",
+      "Create a brief, compelling introduction for a developer based on their skills and experience below, suitable for an 'About Me' section, emphasizing their unique value proposition."
+    ];
+    
     const selectedPrompt = aboutMePromptVariations[Math.floor(Math.random() * aboutMePromptVariations.length)];
 
     try {
@@ -81,11 +76,18 @@ export default function Home() {
       console.error('Error fetching dynamic about me:', err);
       setDynamicAboutMe({ text: '', isLoading: false, error: 'Failed to load dynamic summary. Please try again.' });
     }
-  }, [aboutMePromptVariations]);
+  }, []);
 
   // Wrap fetchDynamicBackground in useCallback
   const fetchDynamicBackground = useCallback(async () => { // <-- WRAP IN useCallback
     setDynamicBackground({ style: 'linear-gradient(to right, #1a202c, #2d3748)', isLoading: true, error: null });
+    
+    const backgroundPromptVariations = [
+      "Generate a CSS linear-gradient background that evokes a sense of modern technology and innovation. Use dark, subtle, or futuristic colors. Provide only the CSS value (e.g., 'linear-gradient(to right, #1a202c, #2d3748)').",
+      "Create a visually appealing and abstract CSS linear-gradient. Focus on professional yet dynamic colors. Provide only the CSS value.",
+      "Suggest a gentle, flowing CSS linear-gradient suitable for a creative tech portfolio. Use complementary muted tones. Provide only the CSS value."
+    ];
+    
     const selectedPrompt = backgroundPromptVariations[Math.floor(Math.random() * backgroundPromptVariations.length)];
 
     try {
@@ -127,7 +129,7 @@ export default function Home() {
       console.error('Error fetching dynamic background:', err);
       setDynamicBackground({ style: 'linear-gradient(to right, #1a202c, #2d3748)', isLoading: false, error: 'Failed to load dynamic background. Using default.' });
     }
-  }, [backgroundPromptVariations]);
+  }, []);
 
 
   useEffect(() => {
